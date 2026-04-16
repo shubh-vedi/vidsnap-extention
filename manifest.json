@@ -1,0 +1,128 @@
+{
+    "manifest_version": 3,
+    "name": "VidSnap - Video Downloader",
+    "version": "1.0.0",
+    "description": "Download videos from Reddit, Twitter/X, Instagram, TikTok, LinkedIn, and Vimeo with one click.",
+    "icons": {
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    },
+    "action": {
+        "default_popup": "popup/popup.html",
+        "default_icon": {
+            "16": "icons/icon16.png",
+            "48": "icons/icon48.png",
+            "128": "icons/icon128.png"
+        },
+        "default_title": "VidSnap - Video Downloader"
+    },
+    "background": {
+        "service_worker": "background/service-worker.js",
+        "type": "module"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://*.reddit.com/*"
+            ],
+            "js": [
+                "content/injector.js",
+                "content/reddit.js"
+            ],
+            "run_at": "document_idle"
+        },
+        {
+            "matches": [
+                "https://twitter.com/*",
+                "https://x.com/*"
+            ],
+            "js": [
+                "content/injector.js",
+                "content/twitter.js"
+            ],
+            "run_at": "document_start"
+        },
+        {
+            "matches": [
+                "https://www.instagram.com/*"
+            ],
+            "js": [
+                "content/injector.js",
+                "content/instagram.js"
+            ],
+            "run_at": "document_start"
+        },
+        {
+            "matches": [
+                "https://www.tiktok.com/*"
+            ],
+            "js": [
+                "content/injector.js",
+                "content/tiktok.js"
+            ],
+            "run_at": "document_start"
+        },
+        {
+            "matches": [
+                "https://www.linkedin.com/*"
+            ],
+            "js": [
+                "content/linkedin-interceptor.js"
+            ],
+            "run_at": "document_start",
+            "world": "MAIN"
+        },
+        {
+            "matches": [
+                "https://www.linkedin.com/*"
+            ],
+            "js": [
+                "content/injector.js",
+                "content/linkedin.js"
+            ],
+            "run_at": "document_start"
+        },
+        {
+            "matches": [
+                "https://vimeo.com/*"
+            ],
+            "js": [
+                "content/injector.js",
+                "content/vimeo.js"
+            ],
+            "run_at": "document_idle"
+        }
+    ],
+    "permissions": [
+        "activeTab",
+        "downloads",
+        "scripting",
+        "contextMenus",
+        "storage",
+        "notifications"
+    ],
+    "host_permissions": [
+        "https://*.reddit.com/*",
+        "https://*.redd.it/*",
+        "https://twitter.com/*",
+        "https://x.com/*",
+        "https://www.instagram.com/*",
+        "https://www.tiktok.com/*",
+        "https://www.linkedin.com/*",
+        "https://vimeo.com/*",
+        "https://cdn.syndication.twimg.com/*",
+        "https://video.twimg.com/*",
+        "https://*.licdn.com/*"
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "icons/*"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VidSnap - Video Downloader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v13M7 11l5 5 5-5"/><path d="M5 21h14"/>
+        </svg>
+      </div>
+      <span class="logo-name">VidSnap</span>
+    </div>
+    <div class="header-right">
+      <span class="pro-badge" id="pro-badge">FREE</span>
+      <div class="download-count" id="download-count" title="Downloads remaining today">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+        <span id="count-label">10 left</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Tabs ── -->
+  <div class="tabs">
+    <button class="tab active" data-tab="history" id="tab-history">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 3h18v4H3zM3 10h18v4H3zM3 17h18v4H3z"/></svg>
+      Downloads
+    </button>
+    <button class="tab" data-tab="settings" id="tab-settings">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
+    </button>
+  </div>
+
+  <!-- ── History Tab ── -->
+  <div class="tab-content active" id="panel-history">
+    <div class="panel-scroll">
+      <div id="history-list">
+        <!-- Populated by popup.js -->
+      </div>
+      <div id="history-empty" class="empty-state hidden">
+        <div class="empty-icon">📭</div>
+        <p>No downloads yet</p>
+        <small>Visit Reddit, Twitter, Instagram, TikTok, LinkedIn, or Vimeo and click the ⬇ VidSnap button!</small>
+      </div>
+      <button class="clear-btn" id="clear-history-btn">🗑 Clear History</button>
+    </div>
+  </div>
+
+  <!-- ── Settings Tab ── -->
+  <div class="tab-content" id="panel-settings">
+    <div class="panel-scroll">
+
+      <div class="settings-group">
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Auto-detect Videos</span>
+            <span class="setting-desc">Automatically show download button on videos</span>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="toggle-autodetect" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Download Notifications</span>
+            <span class="setting-desc">Show system notifications on save</span>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="toggle-notifications" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Default Quality</span>
+            <span class="setting-desc">Preferred quality for downloads</span>
+          </div>
+          <select class="setting-select" id="select-quality">
+            <option value="best">✨ Best</option>
+            <option value="hd">🎬 HD</option>
+            <option value="sd">📱 SD</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <div class="group-label">Pro License</div>
+        <div class="license-row">
+          <input type="text" id="license-input" placeholder="Enter license key…" class="license-input" autocomplete="off" spellcheck="false">
+          <button class="license-btn" id="license-btn">Activate</button>
+        </div>
+        <span class="license-status" id="license-status"></span>
+      </div>
+
+      <div class="settings-group">
+        <div class="group-label">Supported Platforms</div>
+        <div class="platforms-grid">
+          <div class="platform-chip">🔴 Reddit</div>
+          <div class="platform-chip">🐦 Twitter/X</div>
+          <div class="platform-chip">📸 Instagram</div>
+          <div class="platform-chip">🎵 TikTok</div>
+          <div class="platform-chip">💼 LinkedIn</div>
+          <div class="platform-chip">🎬 Vimeo</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Footer / Upgrade CTA ── -->
+  <footer class="footer" id="footer-upgrade">
+    <button class="upgrade-btn" id="upgrade-btn">
+      <span>⚡ Upgrade to Pro — Unlimited Downloads</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </footer>
+
+  <!-- ── Upgrade Modal ── -->
+  <div class="upgrade-modal-overlay hidden" id="upgrade-overlay">
+    <div class="upgrade-modal">
+      <button class="modal-close" id="modal-close">✕</button>
+      <div class="modal-icon">🚀</div>
+      <h2>Upgrade to Pro</h2>
+      <p>Unlock unlimited downloads, HD quality, and priority support.</p>
+      <div class="plans">
+        <div class="plan" data-plan="monthly">
+          <div class="plan-name">⚡ Pro Monthly</div>
+          <div class="plan-price">$2.99<span>/mo</span></div>
+        </div>
+        <div class="plan featured" data-plan="yearly">
+          <div class="plan-badge">Best Value</div>
+          <div class="plan-name">🌟 Pro Yearly</div>
+          <div class="plan-price">$19.99<span>/yr</span></div>
+        </div>
+        <div class="plan" data-plan="lifetime">
+          <div class="plan-name">♾️ Lifetime</div>
+          <div class="plan-price">$39.99<span> once</span></div>
+        </div>
+      </div>
+      <p class="modal-note">Payment integration coming soon. Enter a license key in Settings to activate Pro.</p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
